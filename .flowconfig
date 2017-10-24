@@ -1,4 +1,5 @@
 [ignore]
+.*/css-to-react-native/node_modules/fbjs/.*
 .*/styled-components/src/.*
 .*/styled-components/lib/native/.*
 .*/styled-components/lib/models/InlineStyle.js.flow

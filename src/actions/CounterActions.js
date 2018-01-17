@@ -2,17 +2,22 @@
 
 import type { Action } from '../types/Action';
 import type { Dispatch, GetState } from '../types/Store';
+import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../reducers/counter';
 
-export function increment(amount: number): Action {
+export function increment(amount: number): Action<*> {
   return {
-    type: 'INCREMENT_COUNTER',
+    reducer: {
+      counter: INCREMENT_COUNTER
+    },
     payload: amount,
   };
 }
 
-export function decrement(amount: number): Action {
+export function decrement(amount: number): Action<*> {
   return {
-    type: 'DECREMENT_COUNTER',
+    reducer: {
+      counter: DECREMENT_COUNTER
+    },
     payload: amount,
   };
 }

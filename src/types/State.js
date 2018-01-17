@@ -1,7 +1,6 @@
 /* @flow */
+import type { State as Counter } from '../reducers/counter';
 
-import type { Reducers } from '../reducers';
-
-type $ExtractFunctionReturn = <V>(v: (...args: any) => V) => V;
-
-export type State = $ObjMap<Reducers, $ExtractFunctionReturn>;
+export type State = {
+  counter: Counter
+}

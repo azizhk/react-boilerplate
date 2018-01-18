@@ -1,35 +1,27 @@
 /* @flow */
 
 import { createStore, applyMiddleware, compose } from 'redux';
-import type { StoreEnhancer } from 'redux'
+import type { Middleware } from 'redux'
 import thunk from 'redux-thunk';
 import type { Store, Dispatch } from '../types/Store';
 import type { State } from '../types/State';
 import type { Action } from '../types/Action';
 import initialState from '../reducers'
 
-const dispatchReducerEnhancer: StoreEnhancer<State, Action<any>, Dispatch> =  (createStore) => {
-  return function (reducer): Store {
-    const store = createStore(reducer);
-    return {
-      ...store,
-      dispatch: (action: any) => {
-        if (
-          typeof action === 'object' &&
-          typeof action.reducer === 'object'
-        ) {
-          const keys = Object.keys(action.reducer)
-          if (keys.length >= 1) {
-            const type = action.reducer[keys[0]].name
-            action = {
-              ...action,
-              type
-            }
-          }
-        }
-        return store.dispatch(action)
+const dispatchReducerMiddleware:Middleware<State, Action<any>, Dispatch> = () => next => (action:any) => {
+  if (
+    typeof action === 'object' &&
+    typeof action.reducer === 'object'
+  ) {
+    const keys = Object.keys(action.reducer)
+    if (keys.length >= 1) {
+      const type = action.reducer[keys[0]].name
+      action = {
+        ...action,
+        type
       }
-    };
+    }
+    return next(action)
   }
 }
 
@@ -51,12 +43,10 @@ function reducer (state: State, action: Action<any>): State {
   return state;
 }
 
-const composeEnhancers = (process.env.NODE_ENV !== 'production')
-  && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  || compose;
-const enhancer = composeEnhancers(applyMiddleware(thunk), dispatchReducerEnhancer);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const enhancer = composeEnhancers(applyMiddleware(thunk, dispatchReducerMiddleware));
 
 export default function configureStore(): Store {
-  const store = enhancer(createStore)(reducer);
+  const store = createStore(reducer, enhancer);
   return store;
 }

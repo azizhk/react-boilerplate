@@ -9,12 +9,14 @@ import {
   incrementIfEven,
 } from '../actions/CounterActions';
 import type { State } from '../types/State';
+import type { Dispatch } from '../types/Store';
 
 const mapStateToProps = ({ counter }: State) => ({
   counter,
 });
 
-const mapDispatchToProps = (dispatch: *) =>
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  //$FlowFixMe
   bindActionCreators(
     {
       increment,

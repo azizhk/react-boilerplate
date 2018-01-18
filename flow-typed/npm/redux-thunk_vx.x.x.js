@@ -13,8 +13,10 @@
  * https://github.com/flowtype/flow-typed
  */
 
+import type { Middleware } from 'redux'
+
 declare module 'redux-thunk' {
-  declare module.exports: any;
+  declare module.exports: Middleware;
 }
 
 /**

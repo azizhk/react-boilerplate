@@ -1,16 +1,18 @@
 /* @flow */
 
 import type { Action } from '../types/Action';
-
-
-export type State = number;
-const initialState: State = 0
-export default initialState
+import type { State } from '../types/State';
 
 export function INCREMENT_COUNTER (state: State, payload: number): State {
-  return state + payload
+  return {
+    ...state,
+    counter: state.counter + payload
+  }
 }
 
 export function DECREMENT_COUNTER (state: State, payload: number): State {
-  return state - payload
+  return {
+    ...state,
+    counter: state.counter - payload
+  }
 }

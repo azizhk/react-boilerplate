@@ -6,18 +6,14 @@ import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../reducers/counter';
 
 export function increment(amount: number): Action<*> {
   return {
-    reducer: {
-      counter: INCREMENT_COUNTER
-    },
+    reducer: INCREMENT_COUNTER,
     payload: amount,
   };
 }
 
 export function decrement(amount: number): Action<*> {
   return {
-    reducer: {
-      counter: DECREMENT_COUNTER
-    },
+    reducer: DECREMENT_COUNTER,
     payload: amount,
   };
 }

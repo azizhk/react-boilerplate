@@ -11,34 +11,22 @@ import initialState from '../reducers'
 const dispatchReducerMiddleware:Middleware<State, Action<any>, Dispatch> = () => next => (action:any) => {
   if (
     typeof action === 'object' &&
-    typeof action.reducer === 'object'
+    typeof action.reducer === 'function'
   ) {
-    const keys = Object.keys(action.reducer)
-    if (keys.length >= 1) {
-      const type = action.reducer[keys[0]].name
-      action = {
-        ...action,
-        type
-      }
+    action = {
+      ...action,
+      type: action.reducer.name
     }
-    return next(action)
   }
+  return next(action)
 }
 
 function reducer (state: State, action: Action<any>): State {
   if (!state) {
     return initialState()
   }
-  if (typeof action.reducer === 'object') {
-    const keys = Object.keys(action.reducer);
-    const newPartialState = keys.reduce((newPartialState, key) => {
-      newPartialState[key] = action.reducer[key](state[key], action.payload);
-      return newPartialState;
-    }, {});
-    return {
-      ...state,
-      ...newPartialState
-    };
+  if (typeof action.reducer === 'function') {
+    return action.reducer(state, action.payload);
   }
   return state;
 }

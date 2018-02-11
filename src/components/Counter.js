@@ -2,6 +2,16 @@
 
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import type { MapStateToProps } from 'react-redux';
+import type { State } from '../types/State';
+import type { Dispatch } from '../types/Store'
+import {
+  increment,
+  decrement,
+  incrementIfEven,
+} from '../actions/CounterActions';
 
 const Container = styled.div`
   padding: 48px;
@@ -44,12 +54,10 @@ const Button = styled.button`
 
 type Props = {
   counter: number,
-  increment: (amount: number) => mixed,
-  decrement: (amount: number) => mixed,
-  incrementIfEven: (amount: number) => mixed,
+  dispatch: Dispatch
 };
 
-export default class Counter extends Component<Props, void> {
+class Counter extends Component<Props, void> {
   render() {
     const { props } = this;
 
@@ -57,15 +65,15 @@ export default class Counter extends Component<Props, void> {
       <Container>
         <Count>{props.counter}</Count>
         <Actions>
-          <Button key="increment" onClick={() => props.increment(1)}>
+          <Button key="increment" onClick={() => increment(props.dispatch, 1)}>
             +
           </Button>
-          <Button key="decrement" onClick={() => props.decrement(1)}>
+          <Button key="decrement" onClick={() => decrement(props.dispatch, 1)}>
             -
           </Button>
           <Button
             key="incrementIfEven"
-            onClick={() => props.incrementIfEven(1)}
+            onClick={() => incrementIfEven(props.dispatch, 1)}
           >
             % 2 ? +
           </Button>
@@ -74,3 +82,9 @@ export default class Counter extends Component<Props, void> {
     );
   }
 }
+
+const mapStateToProps:MapStateToProps<*, *, *> = ({ counter }: State) => ({
+  counter,
+});
+
+export default connect(mapStateToProps)(Counter);

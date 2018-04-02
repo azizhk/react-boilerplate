@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import CounterContainer from './CounterContainer';
+import Counter from '../components/Counter';
 import type { Store } from '../types/Store';
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 const RootContainer = ({ store }: Props) => {
   return (
     <Provider store={store}>
-      <CounterContainer />
+      <Counter label="Amazing Counter: "/>
     </Provider>
   );
 };
